@@ -1,6 +1,8 @@
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
-import FormDemo from "./RegisterForm";
-import { Heading, Text } from "@radix-ui/themes";
+import FormDemo from "./RegisterForm/RegisterForm";
+import * as Popover from "@radix-ui/react-popover";
+import { ChevronDownIcon } from "@radix-ui/react-icons";
+
 
 const RootNavbar = () => {
 
@@ -18,15 +20,24 @@ const RootNavbar = () => {
                         Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. 
                     </NavigationMenu.Content>
                 </NavigationMenu.Item>
-                <NavigationMenu.Item className="position: relative">
-                    <NavigationMenu.Trigger className="rounded">
+                <Popover.Root>                    
+                    <Popover.Trigger className="rounded">
                         Register
-                    </NavigationMenu.Trigger>
-                    <NavigationMenu.Content className="position: absolute top-full py-5 rounded">
-                        <Heading style={{ fontSize: "20px"}}>PARENT CONTACT INFORMATION</Heading>
-                        <FormDemo></FormDemo>
-                    </NavigationMenu.Content>
-                </NavigationMenu.Item>
+                    </Popover.Trigger>             
+                    <Popover.Content 
+                        className="border rounded-md p-10 mt-2"
+                        align="center" 
+                        sideOffset={5}
+                    >
+                        <FormDemo />
+                        <Popover.Close 
+                            className="mt-3 px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                            aria-label="Close"
+                        >
+                            Close
+                        </Popover.Close>
+                    </Popover.Content>
+                </Popover.Root>
                 <NavigationMenu.Item className="position: relative">
                     <NavigationMenu.Trigger className="rounded">
                         Sign In
