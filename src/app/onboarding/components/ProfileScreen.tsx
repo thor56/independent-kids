@@ -1,4 +1,4 @@
-// ProfileScreen.tsx
+// src/app/onboarding/components/ProfileScreen.tsx
 "use client";
 
 import { useState } from 'react';
@@ -58,6 +58,8 @@ export default function ProfileScreen() {
         }
       };
 
+      console.log('Submitting user data:', userData);
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/users`, {
         method: 'POST',
         headers: {
@@ -67,22 +69,35 @@ export default function ProfileScreen() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create user');
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || 'Failed to create user');
       }
 
       const createdUser = await response.json();
+      console.log('Created user response:', createdUser);
+
+      if (!createdUser._id) {
+        throw new Error('No user ID received');
+      }
+
       setUserId(createdUser._id);
       setShowChat(true);
+      console.log('States updated:', { userId: createdUser._id, showChat: true });
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create user');
       console.error('Error creating user:', err);
+      setError(err instanceof Error ? err.message : 'Failed to create user');
+      setShowChat(false);
+      setUserId(null);
     } finally {
       setIsLoading(false);
     }
   };
 
+  console.log('Current states:', { showChat, userId });
+
   if (showChat && userId) {
+    console.log('Rendering chat interface with userId:', userId);
     return (
       <div className="flex h-screen w-screen overflow-hidden">
         {/* Left side - Image */}
@@ -93,21 +108,33 @@ export default function ProfileScreen() {
             className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
-
+  
         {/* Right side - Chat Interface */}
-        <div className="w-2/3 flex flex-col h-full bg-[#f5f5f5]">
-          <div className="flex-1 p-6">
+        <div className="w-2/3 h-full flex flex-col">
+         
+  
+          {/* Chat Interface */}
+          <div className="flex-1">
             <ChatInterface userId={userId} />
           </div>
+  
+          {/* Footer with Back Button and Progress Bar */}
+<div className="px-16 py-8 border-t border-gray-200">
+  <div className="max-w-3xl mx-auto flex items-center gap-8">
+    {/* Back Button */}
+    <button 
+      onClick={goToPreviousStep}
+      className="text-[20px] font-medium text-gray-900 flex items-center hover:text-emerald-600 transition-colors"
+    >
+      ← Back
+    </button>
 
-          {/* Footer with Progress Bar */}
-          <div className="px-16 py-8 bg-white border-t border-gray-200">
-            <div className="max-w-3xl mx-auto">
-              <div className="w-full h-1 bg-gray-100 rounded-full">
-                <div className="w-1/3 h-full bg-[#008540] rounded-full"/>
-              </div>
-            </div>
-          </div>
+    {/* Progress Bar */}
+    <div className="flex-1 h-1 bg-gray-100 rounded-full">
+      <div className="w-1/3 h-full bg-emerald-600 rounded-full"/>
+    </div>
+  </div>
+</div>
         </div>
       </div>
     );
@@ -262,7 +289,7 @@ export default function ProfileScreen() {
                     Zip Code
                   </label>
                   <input
-                    type="text"
+                    type="number"
                     value={formData.zipCode}
                     onChange={(e) => setFormData({ ...formData, zipCode: e.target.value })}
                     className="w-full h-[50px] border border-gray-300 rounded-full px-4 shadow-[0_2px_4px_0px_rgba(0,0,0,0.1)]"
@@ -276,7 +303,7 @@ export default function ProfileScreen() {
                 <button 
                   type="button"
                   onClick={goToPreviousStep}
-                  className="text-[20px] font-medium text-gray-900 flex items-center hover:text-[#008540] transition-colors"
+                  className="text-[20px] font-medium text-gray-900 flex items-center hover:text-emerald-600 transition-colors"
                   disabled={isLoading}
                 >
                   ← Back
@@ -284,7 +311,7 @@ export default function ProfileScreen() {
                 <button 
                   type="submit"
                   disabled={isLoading}
-                  className="h-[50px] w-[128px] bg-[#008540] text-white text-[20px] font-medium rounded-lg disabled:bg-gray-400 hover:bg-[#007535] transition-colors"
+                  className="h-[50px] w-[128px] bg-emerald-600 text-white text-[20px] font-medium rounded-lg disabled:bg-gray-400 hover:bg-emerald-700 transition-colors"
                 >
                   {isLoading ? (
                     <div className="flex items-center justify-center">
@@ -303,7 +330,7 @@ export default function ProfileScreen() {
           <div className="max-w-3xl mx-auto">
             {/* Progress bar */}
             <div className="w-full h-1 bg-gray-100 rounded-full">
-              <div className="w-1/3 h-full bg-[#008540] rounded-full"/>
+              <div className="w-1/3 h-full bg-emerald-600 rounded-full"/>
             </div>
           </div>
         </div>
