@@ -5,8 +5,19 @@
 @import "@radix-ui/themes/styles.css";
 
 :root {
+  /* Existing theme variables */
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Style guide colors */
+  --brand-green: #008540;
+  --brand-gray-light: #EBEFF1;
+  --brand-mint: #E7F5E9;
+  --brand-gray-medium: #ADBDC3;
+  --brand-gray-dark: #757575;
+
+  /* colors from figma design mockups */
+  --selected-bg-color: #00854021;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -16,8 +27,54 @@
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  body {
+    color: var(--foreground);
+    background: var(--background);
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  }
+}
+
+@layer components {
+  /* Typography */
+  .text-display {
+    @apply text-[48px] leading-tight font-bold;
+  }
+  
+  .text-title {
+    @apply text-[24px] leading-tight font-bold;
+  }
+
+  .text-body {
+    @apply text-[20px] leading-normal;
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply bg-[var(--brand-green)] text-white px-6 py-2 rounded-lg 
+           hover:opacity-90 transition-colors 
+           disabled:bg-[var(--brand-gray-medium)] disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-[var(--brand-gray-light)] text-[var(--brand-gray-dark)] px-6 py-2 rounded-lg 
+           hover:opacity-90 transition-colors
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Cards */
+  .card {
+    @apply bg-background rounded-lg shadow-sm border border-[var(--brand-gray-medium)]/20 p-4;
+  }
+
+  /* Inputs */
+  .input-primary {
+    @apply w-full border border-[var(--brand-gray-medium)] rounded-lg px-4 py-2 
+           focus:outline-none focus:ring-2 focus:ring-[var(--brand-green)];
+  }
+
+  /* Layout */
+  .container-app {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
 }

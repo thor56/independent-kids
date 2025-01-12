@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/navigation';
-import { OnboardingContext } from '../layout';
-import { ONBOARDING_STEPS } from '../config/steps';
+import { OnboardingContext } from '../app/onboarding/layout';
+import { ONBOARDING_STEPS } from '../app/onboarding/config/steps';
 
 export const useOnboarding = () => {
   const router = useRouter();

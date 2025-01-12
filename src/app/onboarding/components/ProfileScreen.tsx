@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from 'react';
-import { useOnboarding } from '../hooks/useOnboarding';
+import { useOnboarding } from '@/hooks/useOnboarding';
 import ChatInterface from './ChatInterface';
 
 interface FormData {

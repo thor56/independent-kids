@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Button from '@/app/Components/common/Button/Button';
-import { useOnboarding } from '../hooks/useOnboarding';
+import { useOnboarding } from '@/hooks/useOnboarding';
 
 export default function WelcomeScreen() {
   const { goToNextStep } = useOnboarding();
